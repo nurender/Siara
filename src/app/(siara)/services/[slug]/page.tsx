@@ -130,7 +130,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             </h1>
 
             <p className="font-dm-sans text-lg md:text-xl text-siara-purple-200/80 max-w-2xl mx-auto mb-10">
-              {service.short_description || service.description || 'Service content is being prepared. Please visit the admin panel to add sections.'}
+              {service.short_description || (service as any).description || 'Service content is being prepared. Please visit the admin panel to add sections.'}
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
