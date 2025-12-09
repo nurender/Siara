@@ -313,9 +313,13 @@ export async function getBlogs(options?: {
 
   const query = params.toString() ? `?${params.toString()}` : "";
   const response = await fetchCMS<ListResponse<CMSBlog>>(`/blogs${query}`);
+  const pagination = response?.pagination;
   return {
     blogs: response?.data || [],
-    pagination: response?.pagination,
+    pagination: pagination ? {
+      ...pagination,
+      totalPages: pagination.totalPages || Math.ceil((pagination.total || 0) / (pagination.limit || 10)),
+    } : undefined,
   };
 }
 
