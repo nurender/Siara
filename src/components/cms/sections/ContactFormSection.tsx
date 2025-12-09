@@ -20,6 +20,7 @@ export default function ContactFormSection({ content }: ContactFormProps) {
     phone: "",
     event_type: "",
     event_date: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
