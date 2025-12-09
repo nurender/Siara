@@ -164,11 +164,9 @@ async function fetchCMS<T>(endpoint: string, options?: RequestInit): Promise<T |
         "Content-Type": "application/json",
         ...options?.headers,
       },
-      next: process.env.NODE_ENV === 'development' 
-        ? { revalidate: 0, cache: 'no-store' }
-        : {
-            revalidate: CACHE_CONFIG.revalidate,
-          },
+      next: {
+        revalidate: process.env.NODE_ENV === 'development' ? 0 : CACHE_CONFIG.revalidate,
+      },
     });
 
     if (!response.ok) {
