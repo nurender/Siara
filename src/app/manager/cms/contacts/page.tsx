@@ -65,7 +65,7 @@ export default function ContactsManagement() {
     fetchContacts();
   }, [fetchContacts]);
 
-  const updateStatus = async (id: number, status: string, notes?: string) => {
+  const updateStatus = async (id: number, status: string, notes?: string | null) => {
     if (!token) return;
     try {
       const res = await fetch(`${API_URL}/api/contacts/${id}`, {
