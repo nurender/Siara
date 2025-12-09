@@ -162,29 +162,27 @@ npm run build
 pm2 restart all
 ```
 
-### Using Update Script
-```bash
-ssh your-user@your-server-ip
-cd ~/siara-events
-bash update-and-build.sh
-pm2 restart all
-```
-
 ---
 
-## 📁 Important Files
+## 📁 Important Files & Scripts
 
 ### `ecosystem.config.js`
 PM2 configuration file - manages both frontend and backend processes.
 
-### `update-and-build.sh`
-Script to pull latest code and rebuild application.
+### `add-swap-and-setup.sh`
+Complete setup script with swap creation (for low memory servers).
 
-### `restart-pm2.sh`
-Script to restart PM2 processes after updates.
+### `complete-setup.sh`
+Complete setup script without swap (for servers with enough memory).
 
-### `final-deploy.sh`
-Complete deployment script (first time setup).
+### `simple-fix.sh`
+Quick fix script for common issues.
+
+### `create-mysql-user.sh`
+Script to create dedicated MySQL user (needs sudo).
+
+### `sync-cms-to-server.sh`
+Script to sync CMS content to server.
 
 ---
 
