@@ -41,7 +41,7 @@ export default function PortfolioFeaturedSection({ content, relatedData }: Portf
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   // Support both 'portfolio' and 'featuredPortfolio' keys
-  const portfolio = (relatedData?.portfolio || relatedData?.featuredPortfolio || []).slice(0, content.display_count || 3);
+  const portfolio = ((relatedData as any)?.portfolio || (relatedData as any)?.featuredPortfolio || []).slice(0, content.display_count || 3);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
