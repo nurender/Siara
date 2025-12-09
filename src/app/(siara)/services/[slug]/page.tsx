@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
 
   return {
     title: service.meta_title || `${service.name} | ${siteName}`,
-    description: service.meta_description || service.short_description || `Discover our ${service.name} service. ${service.description || ''}`,
-    keywords: service.meta_keywords || `${service.name}, wedding planning, event management, ${siteName}`,
+    description: service.meta_description || service.short_description || `Discover our ${service.name} service. ${(service as any).description || ''}`,
+    keywords: (service as any).meta_keywords || `${service.name}, wedding planning, event management, ${siteName}`,
     openGraph: {
       title: service.meta_title || `${service.name} | ${siteName}`,
       description: service.meta_description || service.short_description,
