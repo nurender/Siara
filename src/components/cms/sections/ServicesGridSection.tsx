@@ -27,7 +27,7 @@ interface ServicesGridProps {
   relatedData?: { services?: Service[] };
 }
 
-const serviceIcons: Record<string, JSX.Element> = {
+const serviceIcons: Record<string, React.ReactElement> = {
   'weddings-ceremonies': (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.75 1.75 0 013 15.546M9 6.75h6m-6 3h6m3-6.75v15a2.25 2.25 0 01-2.25 2.25H8.25A2.25 2.25 0 016 18.75V3m12 0h-2.25m2.25 0h2.25m-12 0H6m0 0H3.75" />
