@@ -7,22 +7,12 @@
 ssh nurie@170.64.205.179
 ```
 
-### Step 2: Upload Code to Server
+### Step 2: Clone Repository on Server
 
-**From your local Windows machine, run:**
-```powershell
-# Navigate to project directory
-cd D:\Project\Siara\free-nextjs-admin-dashboard
-
-# Upload entire project (excluding node_modules)
-scp -r --exclude node_modules --exclude .next --exclude backend/node_modules . nurie@170.64.205.179:~/siara-events
-```
-
-**OR use Git (if you have a repository):**
 ```bash
 # On server
 cd ~
-git clone <your-repo-url> siara-events
+git clone https://github.com/nurender/Siara.git siara-events
 cd siara-events
 ```
 
@@ -93,37 +83,18 @@ node database/seed.js
 node database/seed-cms.js
 ```
 
-### Step 6: Install Dependencies & Build
+### Step 6: Run Deployment Script
 
 ```bash
 cd ~/siara-events
 
-# Make scripts executable
-chmod +x deploy.sh quick-deploy.sh
+# Make deployment script executable
+chmod +x server-deploy.sh
 
-# Install dependencies
-npm install
-cd backend && npm install && cd ..
+# Run deployment (this will install dependencies, build, and start PM2)
+./server-deploy.sh
 
-# Build Next.js
-npm run build
-```
-
-### Step 7: Start with PM2
-
-```bash
-cd ~/siara-events
-
-# Create logs directory
-mkdir -p logs
-
-# Start applications
-pm2 start ecosystem.config.js
-
-# Save PM2 configuration
-pm2 save
-
-# Setup PM2 to start on boot
+# Setup PM2 to start on boot (first time only)
 pm2 startup
 # Follow the instructions shown (usually: sudo env PATH=$PATH:...)
 ```
