@@ -113,7 +113,7 @@ export default function PortfolioFeaturedSection({ content, relatedData }: Portf
 
         {/* Portfolio Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {portfolio.map((item, index) => {
+          {portfolio.map((item: PortfolioItem, index: number) => {
             const gradient = gradientOptions[index % gradientOptions.length];
             const venue = item.venue || item.location;
             // Estimate guests based on event type
