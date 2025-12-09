@@ -2,8 +2,11 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 // Create connection pool
+// Force IPv4 if localhost is used (to avoid IPv6 ::1 issues)
+const dbHost = process.env.DB_HOST === 'localhost' ? '127.0.0.1' : process.env.DB_HOST;
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
+  host: dbHost,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
