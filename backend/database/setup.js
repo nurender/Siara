@@ -144,9 +144,12 @@ const setupDatabase = async () => {
         id INT PRIMARY KEY AUTO_INCREMENT,
         title VARCHAR(255) NOT NULL,
         slug VARCHAR(255) UNIQUE NOT NULL,
+        subtitle VARCHAR(255),
         description TEXT,
+        summary TEXT,
         event_type VARCHAR(50),
         location VARCHAR(100),
+        venue VARCHAR(255),
         event_date DATE,
         client_name VARCHAR(100),
         testimonial TEXT,
@@ -154,11 +157,25 @@ const setupDatabase = async () => {
         gallery JSON,
         is_featured BOOLEAN DEFAULT FALSE,
         is_active BOOLEAN DEFAULT TRUE,
+        status ENUM('draft', 'published', 'archived') DEFAULT 'published',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
     `);
     console.log('✅ Portfolio table created');
+    
+    // Add missing columns if table already exists
+    try {
+      await connection.query(`ALTER TABLE portfolio ADD COLUMN IF NOT EXISTS subtitle VARCHAR(255)`);
+      await connection.query(`ALTER TABLE portfolio ADD COLUMN IF NOT EXISTS summary TEXT`);
+      await connection.query(`ALTER TABLE portfolio ADD COLUMN IF NOT EXISTS venue VARCHAR(255)`);
+      await connection.query(`ALTER TABLE portfolio ADD COLUMN IF NOT EXISTS status ENUM('draft', 'published', 'archived') DEFAULT 'published'`);
+    } catch (err) {
+      // Columns might already exist, ignore error
+      if (err.code !== 'ER_DUP_FIELDNAME') {
+        console.log('⚠️  Note: Some columns may already exist');
+      }
+    }
 
     // Create Subscribers Table
     await connection.query(`
