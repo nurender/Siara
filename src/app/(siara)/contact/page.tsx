@@ -51,7 +51,7 @@ async function getPageData() {
 
 export default async function ContactPage() {
   const { sections, relatedData } = await getPageData();
-  const settings = relatedData.settings || {};
+  const settings = (relatedData && 'settings' in relatedData) ? relatedData.settings : {};
   
   // Check if we have CMS sections
   const hasCMSSections = sections && sections.length > 0;
