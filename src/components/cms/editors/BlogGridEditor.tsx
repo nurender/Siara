@@ -50,7 +50,8 @@ export default function BlogGridEditor({ content, settings, onChange, token }: B
   const updateCTA = (field: "text" | "url", value: string) => {
     updateContent({
       cta: {
-        ...localContent.cta,
+        text: localContent.cta?.text || "",
+        url: localContent.cta?.url || "",
         [field]: value,
       },
     });
