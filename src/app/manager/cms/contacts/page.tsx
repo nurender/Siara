@@ -81,7 +81,7 @@ export default function ContactsManagement() {
       if (data.success) {
         fetchContacts();
         if (selectedContact?.id === id) {
-          setSelectedContact({ ...selectedContact, status, admin_notes: notes || null });
+          setSelectedContact({ ...selectedContact, status: status as "closed" | "new" | "contacted" | "qualified" | "converted", admin_notes: notes || null });
         }
       } else {
         alert(data.message || "Update failed");
