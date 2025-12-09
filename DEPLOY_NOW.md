@@ -1,80 +1,119 @@
-# 🚀 Deploy Now - Quick Commands
+# 🚀 Deploy Now - Quick Guide
 
-## Server: nurie@170.64.205.179
-## Repository: https://github.com/nurender/Siara
+## Repository
+**GitHub:** https://github.com/nurender/Siara
 
-## One-Time Setup (First Time Only)
+## Server
+**SSH:** `nurie@170.64.205.179`
 
-SSH into server aur ye commands run karein:
+---
+
+## Quick Deploy (Automated)
+
+### Windows (PowerShell):
+```powershell
+.\deploy-from-github.ps1
+```
+
+### Linux/Mac:
+```bash
+chmod +x deploy-from-github.sh
+./deploy-from-github.sh
+```
+
+---
+
+## Manual Deploy (Step by Step)
+
+### 1. Connect to Server
+```bash
+ssh nurie@170.64.205.179
+```
+
+### 2. Clone/Update Repository
+```bash
+# First time
+git clone https://github.com/nurender/Siara.git ~/siara-events
+cd ~/siara-events
+
+# Or update existing
+cd ~/siara-events
+git pull origin main
+```
+
+### 3. Setup Environment Variables
+```bash
+# Create .env in root
+nano .env
+```
+
+**Add:**
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=siara_events
+PORT=5000
+NODE_ENV=production
+JWT_SECRET=your_secret_key_here
+FRONTEND_URL=http://170.64.205.179:3000
+NEXT_PUBLIC_API_URL=http://170.64.205.179:5000
+```
 
 ```bash
-# 1. Connect
-ssh nurie@170.64.205.179
-
-# 2. Install Node.js & PM2
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
-sudo npm install -g pm2
-
-# 3. Setup MySQL Database
-sudo mysql -u root -p
-# MySQL me ye commands:
-CREATE DATABASE siara_events;
-CREATE USER 'siara_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON siara_events.* TO 'siara_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-
-# 4. Clone & Setup
-cd ~
-git clone https://github.com/nurender/Siara.git siara-events
-cd siara-events
-
-# 5. Create .env file
-nano .env
-# Add these lines:
-# DB_HOST=localhost
-# DB_USER=siara_user
-# DB_PASSWORD=your_password
-# DB_NAME=siara_events
-# PORT=5000
-# NODE_ENV=production
-# JWT_SECRET=your_secret_key_here
-# FRONTEND_URL=http://170.64.205.179:3000
-# NEXT_PUBLIC_API_URL=http://170.64.205.179:5000
-# Save: Ctrl+X, Y, Enter
-
-# 6. Copy .env to backend
-cp .env backend/.env
-
-# 7. Setup Database
+# Create .env in backend
 cd backend
+nano .env
+# Add same content
+cd ..
+```
+
+### 4. Setup Database (First Time Only)
+```bash
+cd backend
+mysql -u root -p
+# CREATE DATABASE siara_events;
+# EXIT;
 node database/setup.js
 node database/setup-cms.js
 node database/seed.js
 node database/seed-cms.js
 cd ..
+```
 
-# 8. Deploy
-chmod +x server-deploy.sh
-./server-deploy.sh
+### 5. Install & Build
+```bash
+npm install
+cd backend && npm install && cd ..
+npm run build
+```
 
-# 9. Setup Auto-start
+### 6. Start with PM2
+```bash
+# Install PM2 (if not installed)
+npm install -g pm2
+
+# Create logs directory
+mkdir -p logs
+
+# Start applications
+pm2 start ecosystem.config.js
+pm2 save
+
+# Setup auto-start on boot (first time)
 pm2 startup
 # Follow instructions shown
 ```
 
-## Future Updates (After First Time)
-
-Bas ye command run karein:
-
+### 7. Verify
 ```bash
-ssh nurie@170.64.205.179
-cd ~/siara-events
-./server-deploy.sh
+pm2 status
+curl http://localhost:5000/api/health
 ```
 
-Ya manually:
+---
+
+## For Updates (After Code Changes)
 
 ```bash
 cd ~/siara-events
@@ -85,19 +124,46 @@ npm run build
 pm2 restart all
 ```
 
-## Check Status
+---
 
+## Troubleshooting
+
+### Check PM2 Status
 ```bash
 pm2 status
 pm2 logs
 ```
 
-## Access Application
+### Restart Services
+```bash
+pm2 restart all
+```
 
-- Frontend: http://170.64.205.179:3000
-- Backend API: http://170.64.205.179:5000/api/health
+### Check Ports
+```bash
+sudo lsof -i :3000
+sudo lsof -i :5000
+```
+
+### Database Issues
+```bash
+sudo systemctl status mysql
+mysql -u root -p -e "SHOW DATABASES;"
+```
 
 ---
 
-**Detailed Guide:** `FIRST_TIME_DEPLOY.md` file dekhein
+## Access URLs
 
+- **Frontend:** http://170.64.205.179:3000
+- **Backend API:** http://170.64.205.179:5000/api/health
+- **Manager Panel:** http://170.64.205.179:3000/manager
+
+---
+
+## Important Notes
+
+1. **First Time:** Make sure to setup database and environment variables
+2. **PM2:** Keeps applications running even after SSH disconnect
+3. **Updates:** Always run `git pull` before deploying updates
+4. **Logs:** Check `pm2 logs` if something goes wrong
