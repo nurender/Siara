@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps): Pr
   return {
     title: portfolio.meta_title || `${portfolio.title} | ${siteName} Portfolio`,
     description: portfolio.meta_description || portfolio.summary || `Explore ${portfolio.title} - ${portfolio.event_type} at ${portfolio.location}`,
-    keywords: portfolio.meta_keywords || `${portfolio.title}, ${portfolio.event_type}, ${portfolio.location}, wedding portfolio`,
+    keywords: (portfolio as any).meta_keywords || `${portfolio.title}, ${portfolio.event_type}, ${portfolio.location}, wedding portfolio`,
     openGraph: {
       title: portfolio.meta_title || `${portfolio.title} | ${siteName}`,
       description: portfolio.meta_description || portfolio.summary,
