@@ -379,7 +379,9 @@ export default function ContactsManagement() {
                     setSelectedContact({ ...selectedContact, admin_notes: e.target.value });
                   }}
                   onBlur={(e) => {
-                    updateStatus(selectedContact.id, e.target.value as "closed" | "new" | "contacted" | "qualified" | "converted", selectedContact.admin_notes || null);
+                    if (selectedContact?.id) {
+                      updateStatus(selectedContact.id, e.target.value as "closed" | "new" | "contacted" | "qualified" | "converted", selectedContact.admin_notes || null);
+                    }
                   }}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
