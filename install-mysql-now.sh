@@ -49,18 +49,43 @@ fi
 # Step 5: Configure MySQL root user (allow empty password)
 echo ""
 echo "5️⃣ Configuring MySQL root user..."
-mysql -u root <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+# Try with sudo mysql first (works without password in MySQL 8.0+)
+if sudo mysql -e "SELECT 1;" 2>/dev/null; then
+    echo "Using sudo mysql access..."
+    sudo mysql <<EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '';
 FLUSH PRIVILEGES;
 EOF
+elif mysql -u root -e "SELECT 1;" 2>/dev/null; then
+    echo "Root user already accessible..."
+    mysql -u root <<EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '';
+FLUSH PRIVILEGES;
+EOF
+else
+    echo "⚠️  Cannot configure root user automatically"
+    echo "Please run manually: sudo mysql"
+    echo "Then run: ALTER USER 'root'@'localhost' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
+fi
 
 # Step 6: Create database
 echo ""
 echo "6️⃣ Creating database..."
-mysql -u root <<EOF
+# Try with sudo mysql first
+if sudo mysql -e "SELECT 1;" 2>/dev/null; then
+    sudo mysql <<EOF
 CREATE DATABASE IF NOT EXISTS siara_events;
 SHOW DATABASES;
 EOF
+elif mysql -u root -e "SELECT 1;" 2>/dev/null; then
+    mysql -u root <<EOF
+CREATE DATABASE IF NOT EXISTS siara_events;
+SHOW DATABASES;
+EOF
+else
+    echo "⚠️  Cannot create database - need MySQL access"
+    exit 1
+fi
 
 # Step 7: Setup database tables
 echo ""
