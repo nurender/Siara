@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   return {
     title: blog.meta_title || `${blog.title} | ${siteName} Blog`,
     description: blog.meta_description || blog.excerpt || blog.content?.substring(0, 160) || `Read ${blog.title} on ${siteName}`,
-    keywords: blog.meta_keywords || `${blog.title}, wedding planning, ${blog.category || 'blog'}`,
+    keywords: (blog as any).meta_keywords || `${blog.title}, wedding planning, ${blog.category || 'blog'}`,
     openGraph: {
       title: blog.meta_title || `${blog.title} | ${siteName}`,
       description: blog.meta_description || blog.excerpt,
