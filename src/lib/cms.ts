@@ -317,8 +317,10 @@ export async function getBlogs(options?: {
   return {
     blogs: response?.data || [],
     pagination: pagination ? {
-      ...pagination,
-      totalPages: pagination.totalPages || Math.ceil((pagination.total || 0) / (pagination.limit || 10)),
+      total: pagination.total,
+      page: pagination.page,
+      limit: pagination.limit,
+      totalPages: (pagination as any).totalPages || Math.ceil(pagination.total / pagination.limit),
     } : undefined,
   };
 }
