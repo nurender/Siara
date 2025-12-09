@@ -154,7 +154,7 @@ export default function SiaraFooter() {
         </svg>
       ),
     },
-  ].filter(Boolean) as { name: string; href: string; icon: JSX.Element }[];
+  ].filter(Boolean) as { name: string; href: string; icon: React.ReactElement }[];
 
   const siteName = settings.site_name || "";
   const siteDescription = settings.site_description || "";
